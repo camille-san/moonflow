@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E214" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="PeriodDate" representedClassName="PeriodDate" syncable="YES">
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="UserInfos" representedClassName="UserInfos" syncable="YES">
+        <attribute name="averageCycleLength" attributeType="Integer 16" minValueString="0" defaultValueString="28" usesScalarValueType="YES"/>
+        <attribute name="averagePeriodLength" attributeType="Integer 16" minValueString="0" defaultValueString="7" usesScalarValueType="YES"/>
+    </entity>
+</model>
