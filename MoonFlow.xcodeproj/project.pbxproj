@@ -21,14 +21,16 @@
 		914B745B2BACBA2D0068D19D /* DayOfWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B745A2BACBA2D0068D19D /* DayOfWeek.swift */; };
 		914B745D2BACBA400068D19D /* DateContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B745C2BACBA400068D19D /* DateContainer.swift */; };
 		914B74602BACBAB80068D19D /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B745F2BACBAB80068D19D /* DateHelper.swift */; };
-		914B74622BACBAEE0068D19D /* StatisticsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B74612BACBAEE0068D19D /* StatisticsHelper.swift */; };
-		914B74642BACBB830068D19D /* StatisticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B74632BACBB830068D19D /* StatisticsTests.swift */; };
+		914B74622BACBAEE0068D19D /* AverageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B74612BACBAEE0068D19D /* AverageHelper.swift */; };
+		914B74642BACBB830068D19D /* AverageCalculationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B74632BACBB830068D19D /* AverageCalculationTests.swift */; };
 		914B74852BACC83D0068D19D /* UserInfosScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B74842BACC83D0068D19D /* UserInfosScreen.swift */; };
 		914B74872BACC90A0068D19D /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B74862BACC90A0068D19D /* SettingsScreen.swift */; };
 		914B74942BACD0E00068D19D /* UserInfos+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B74902BACD0E00068D19D /* UserInfos+CoreDataClass.swift */; };
 		914B74952BACD0E00068D19D /* UserInfos+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B74912BACD0E00068D19D /* UserInfos+CoreDataProperties.swift */; };
 		914B74962BACD0E00068D19D /* PeriodDate+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B74922BACD0E00068D19D /* PeriodDate+CoreDataClass.swift */; };
 		914B74972BACD0E00068D19D /* PeriodDate+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B74932BACD0E00068D19D /* PeriodDate+CoreDataProperties.swift */; };
+		915BB17D2BADDB8D0013B25F /* PredictionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB17C2BADDB8D0013B25F /* PredictionTests.swift */; };
+		915BB17F2BADDC160013B25F /* PredictionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB17E2BADDC160013B25F /* PredictionHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,14 +68,16 @@
 		914B745A2BACBA2D0068D19D /* DayOfWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOfWeek.swift; sourceTree = "<group>"; };
 		914B745C2BACBA400068D19D /* DateContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateContainer.swift; sourceTree = "<group>"; };
 		914B745F2BACBAB80068D19D /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
-		914B74612BACBAEE0068D19D /* StatisticsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsHelper.swift; sourceTree = "<group>"; };
-		914B74632BACBB830068D19D /* StatisticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsTests.swift; sourceTree = "<group>"; };
+		914B74612BACBAEE0068D19D /* AverageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AverageHelper.swift; sourceTree = "<group>"; };
+		914B74632BACBB830068D19D /* AverageCalculationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AverageCalculationTests.swift; sourceTree = "<group>"; };
 		914B74842BACC83D0068D19D /* UserInfosScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfosScreen.swift; sourceTree = "<group>"; };
 		914B74862BACC90A0068D19D /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		914B74902BACD0E00068D19D /* UserInfos+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfos+CoreDataClass.swift"; sourceTree = "<group>"; };
 		914B74912BACD0E00068D19D /* UserInfos+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfos+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		914B74922BACD0E00068D19D /* PeriodDate+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PeriodDate+CoreDataClass.swift"; sourceTree = "<group>"; };
 		914B74932BACD0E00068D19D /* PeriodDate+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PeriodDate+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		915BB17C2BADDB8D0013B25F /* PredictionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionTests.swift; sourceTree = "<group>"; };
+		915BB17E2BADDC160013B25F /* PredictionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,7 +157,8 @@
 			isa = PBXGroup;
 			children = (
 				914B74312BACB2DD0068D19D /* MoonFlowTests.swift */,
-				914B74632BACBB830068D19D /* StatisticsTests.swift */,
+				914B74632BACBB830068D19D /* AverageCalculationTests.swift */,
+				915BB17C2BADDB8D0013B25F /* PredictionTests.swift */,
 			);
 			path = MoonFlowTests;
 			sourceTree = "<group>";
@@ -191,7 +196,8 @@
 			isa = PBXGroup;
 			children = (
 				914B745F2BACBAB80068D19D /* DateHelper.swift */,
-				914B74612BACBAEE0068D19D /* StatisticsHelper.swift */,
+				914B74612BACBAEE0068D19D /* AverageHelper.swift */,
+				915BB17E2BADDC160013B25F /* PredictionHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -326,6 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				915BB17F2BADDC160013B25F /* PredictionHelper.swift in Sources */,
 				914B74872BACC90A0068D19D /* SettingsScreen.swift in Sources */,
 				914B745D2BACBA400068D19D /* DateContainer.swift in Sources */,
 				914B745B2BACBA2D0068D19D /* DayOfWeek.swift in Sources */,
@@ -338,7 +345,7 @@
 				914B74602BACBAB80068D19D /* DateHelper.swift in Sources */,
 				914B74852BACC83D0068D19D /* UserInfosScreen.swift in Sources */,
 				914B74562BACB7C20068D19D /* MonthCalendarScreen.swift in Sources */,
-				914B74622BACBAEE0068D19D /* StatisticsHelper.swift in Sources */,
+				914B74622BACBAEE0068D19D /* AverageHelper.swift in Sources */,
 				914B74282BACB2DD0068D19D /* MoonFlow.xcdatamodeld in Sources */,
 				914B74592BACBA1C0068D19D /* Month.swift in Sources */,
 				914B741C2BACB2DC0068D19D /* MoonFlowApp.swift in Sources */,
@@ -349,7 +356,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				914B74642BACBB830068D19D /* StatisticsTests.swift in Sources */,
+				915BB17D2BADDB8D0013B25F /* PredictionTests.swift in Sources */,
+				914B74642BACBB830068D19D /* AverageCalculationTests.swift in Sources */,
 				914B74322BACB2DD0068D19D /* MoonFlowTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

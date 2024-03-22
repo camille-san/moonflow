@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    
+
     @State private var selection: Tab = .calendar
     @State private var showSettings = false
 
@@ -51,5 +51,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }

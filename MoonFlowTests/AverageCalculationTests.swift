@@ -8,7 +8,7 @@
 import XCTest
 @testable import MoonFlow
 
-final class StatisticsTests: XCTestCase {
+final class AverageCalculationTests: XCTestCase {
 
     func testAverages() {
         let dateFormatter = getDateFormatter()
@@ -48,7 +48,7 @@ final class StatisticsTests: XCTestCase {
         }
 
         // MARK: When
-        let results: StatisticsResults = refreshStatistics(dates: dates)
+        let results: Results = refreshAveragesAndPredictions(freshSelectedDates: dates)
 
         // MARK: Then
         XCTAssertEqual(results.newAverageCycleLength, 27, "The average cycle length should be 27 (28+26)/2")
@@ -73,7 +73,7 @@ final class StatisticsTests: XCTestCase {
         }
 
         // MARK: When
-        let results: StatisticsResults = refreshStatistics(dates: dates)
+        let results: Results = refreshAveragesAndPredictions(freshSelectedDates: dates)
 
         // MARK: Then
         XCTAssertEqual(results.newAverageCycleLength, 28, "Only one period so no entire cycle -> default value")

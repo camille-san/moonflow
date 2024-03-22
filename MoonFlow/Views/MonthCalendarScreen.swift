@@ -17,16 +17,17 @@ struct MonthCalendarScreen: View {
     @FetchRequest(sortDescriptors: [])
     private var userInfosList: FetchedResults<UserInfos>
 
-    @State private var month = Calendar.current.component(.month, from: Date())
-    @State private var year = Calendar.current.component(.year, from: Date())
+    @State private var month = calendar.component(.month, from: Date())
+    @State private var year = calendar.component(.year, from: Date())
 
     @State private var dayPositions: [Date : CGRect] = [:]
-    @State private var tempSelectedDates : [Date] = []
+    @State private var tempSelectedDates: [Date] = []
+    @State private var next1YearPredictedPeriods: [Date] = []
 
-    private let size : CGFloat = 45
+    private let size: CGFloat = 45
     private let generator = UIImpactFeedbackGenerator(style: .medium)
 
-    private let calendar = Calendar.current
+    //    private let calendar = Calendar.current
     private let todayMonth = Calendar.current.component(.month, from: Date())
     private let todayYear = Calendar.current.component(.year, from: Date())
 
@@ -52,53 +53,58 @@ struct MonthCalendarScreen: View {
             }
             .padding(.horizontal)
 
-            // MARK: MonthCalendar
-            Group {
-                LazyVGrid(columns: columns) {
-                    ForEach(getDays(month: month, year: year)) { day in
-                        Group {
-                            if day.isFilled {
-                                Text("\(day.dayOfMonth!)")
-                                    .frame(width: size, height: size)
-                                    .background(
-                                        isSelected(date: day.date!) ? Color.accentColor :
-                                                .white)
-                                    .foregroundStyle(isSelected(date: day.date!) ? .white :
-                                            .black)
-                                //                                .onAppear {
-                                //                                    self.rectPosition?(geometry.frame(in: .global))
-                                //                                }
-                            } else {
-                                Text("")
-                                    .frame(width: size, height: size)
-                                    .background(.clear)
-                            }
+            // MARK: Month Calendar
+            //            Group {
+            LazyVGrid(columns: columns) {
+                ForEach(getDays(month: month, year: year)) { day in
+                    Group {
+                        if day.isFilled {
+                            Text("\(day.dayOfMonth!)")
+                                .frame(width: size, height: size)
+                                .background(
+                                    isSelected(date: day.date!) ? Color.accentColor :
+                                            .white)
+                                .foregroundStyle(isSelected(date: day.date!) ? .white :
+                                        .black)
+                            //                                .onAppear {
+                            //                                    self.rectPosition?(geometry.frame(in: .global))
+                            //                                }
+                        } else {
+                            Text("")
+                                .frame(width: size, height: size)
+                                .background(.clear)
                         }
-                        .font(.system(size: 16,
-                                      weight: .medium))
-                        .clipShape(Circle())
-                        .overlay{
-                            if day.isFilled && tempSelectedDates.contains(day.date!) {
-                                Color.orange
-                                    .opacity(0.2)
-                                    .clipShape(Circle())
-                            }
-                        }
-                        .overlay {
-                            if day.isFilled && calendar.isDateInToday(day.date!) {
-                                Circle().stroke(Color.accentColor, lineWidth: 2)
-                            }
-                        }
-                        .frame(width: size, height: size)
-                        .onTapGesture {onClickDate(dateContainer: day)}
                     }
+                    .font(.system(size: 16,
+                                  weight: .medium))
+                    .clipShape(Circle())
+                    .overlay{
+                        if day.isFilled && tempSelectedDates.contains(day.date!) {
+                            Color.yellow
+                                .opacity(0.2)
+                                .clipShape(Circle())
+                        }
+                    }
+                    .overlay {
+                        if day.isFilled && calendar.isDateInToday(day.date!) {
+                            Circle().stroke(Color.accentColor, lineWidth: 2)
+                        }
+                    }
+                    .overlay {
+                        if day.isFilled && isPredicted(date: day.date!) {
+                            Circle().stroke(Color.accentColor, style: StrokeStyle(lineWidth: 2, dash: [5]))
+                        }
+                    }
+                    .frame(width: size, height: size)
+                    .onTapGesture {onClickDate(dateContainer: day)}
                 }
-                .padding()
-                .background(.accentColor2.opacity(0.3))
-                .clipShape(RoundedRectangle(cornerRadius: 15))
-                .padding(.top, 18)
             }
-            .id("\(month)-\(year)")
+            .padding()
+            .background(.accentColor2.opacity(0.3))
+            .clipShape(RoundedRectangle(cornerRadius: 15))
+            .padding(.top, 18)
+            //            }
+            //            .id("\(month)-\(year)")
             //        .gesture(DragGesture()
             //            .onChanged { value in
             //                selectDatesBasedOnCGPoints(
@@ -169,6 +175,9 @@ struct MonthCalendarScreen: View {
             }
             Spacer()
         }
+        .onAppear {
+            get1YearPredicted(fromDates: dates.map { $0.date }, isInit: true)
+        }
         .padding(.top, 48)
         .padding(.horizontal)
         .gesture(DragGesture(minimumDistance: 20, coordinateSpace: .global)
@@ -203,7 +212,7 @@ struct MonthCalendarScreen: View {
                 insertDate(date: date)
             }
             generator.impactOccurred()
-            saveNewStatistics(newStats: refreshStatistics(dates: dates.map { $0.date }))
+            saveNewAveragesAndPredictions(freshResults: refreshAveragesAndPredictions(freshSelectedDates: dates.map { $0.date }))
         }
     }
 
@@ -247,6 +256,22 @@ struct MonthCalendarScreen: View {
         })
     }
 
+    private func isPredicted(date: Date) -> Bool {
+        return next1YearPredictedPeriods.contains(where: { predictedDate in
+            return Calendar.current.isDate(predictedDate, inSameDayAs: date)
+        })
+    }
+
+    private func get1YearPredicted(fromDates: [Date], isInit: Bool) {
+        let currentPeriods = extractPeriods(dates: fromDates)
+        let lastPeriod = currentPeriods.last!
+        next1YearPredictedPeriods +=
+        predictNextYearPeriods(
+            lastPeriod: lastPeriod.dates,
+            averageCycleLength: Int(getUserInfos().averageCycleLength),
+            averagePeriodLength: Int(getUserInfos().averagePeriodLength))
+    }
+
     private func insertDate(date: Date) {
         let newDate = PeriodDate(context: viewContext)
         newDate.date = date
@@ -260,22 +285,20 @@ struct MonthCalendarScreen: View {
         }
     }
 
-    private func saveNewStatistics(newStats: StatisticsResults) {
-        getUserInfos().averageCycleLength = Int16(newStats.newAverageCycleLength)
-        getUserInfos().averagePeriodLength = Int16(newStats.newAveragePeriodLength)
+    private func saveNewAveragesAndPredictions(freshResults: Results) {
+        next1YearPredictedPeriods = freshResults.predictions
+        getUserInfos().averageCycleLength = Int16(freshResults.newAverageCycleLength)
+        getUserInfos().averagePeriodLength = Int16(freshResults.newAveragePeriodLength)
         saveContext()
     }
 
     private func goToToday() {
-        //        withAnimation(animation) {
         month = todayMonth
         year = todayYear
-        //        }
     }
 
     private func previousMonth() {
         generator.prepare()
-        //        withAnimation(animation) {
         if month == 1 {
             month = 12
             year -= 1
@@ -284,12 +307,10 @@ struct MonthCalendarScreen: View {
         }
         dayPositions = [:]
         generator.impactOccurred()
-        //        }
     }
 
     private func nextMonth() {
         generator.prepare()
-        //        withAnimation(animation) {
         if month == 12 {
             month = 1
             year += 1
@@ -298,7 +319,12 @@ struct MonthCalendarScreen: View {
         }
         dayPositions = [:]
         generator.impactOccurred()
-        //        }
+
+        let lastDayOfPrediction: Date = next1YearPredictedPeriods.last!
+
+        if month == calendar.component(.month, from: lastDayOfPrediction) {
+            get1YearPredicted(fromDates: next1YearPredictedPeriods, isInit: false)
+        }
     }
 
     private func saveContext() {

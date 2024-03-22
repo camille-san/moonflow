@@ -16,20 +16,27 @@ struct UserInfosScreen: View {
     //        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
     //        animation: .default)
     @FetchRequest(sortDescriptors: [])
-    private var userInfos: FetchedResults<UserInfos>
-    
+    private var userInfosList: FetchedResults<UserInfos>
+
     var body: some View {
         VStack {
+            Text("Health informations")
+                .font(.title)
+                .bold()
+                .padding(.bottom, 24)
             HStack {
                 Text("Average Cycle Length")
-                Text("\(userInfos[0].averageCycleLength)")
+                Text("\(userInfosList[0].averageCycleLength)")
+                    .foregroundStyle(Color.accentColor)
                     .bold()
             }
             HStack {
                 Text("Average Period Length")
-                Text("\(userInfos[0].averagePeriodLength)")
+                Text("\(userInfosList[0].averagePeriodLength)")
+                    .foregroundStyle(Color.accentColor)
                     .bold()
             }
+            Spacer()
         }
     }
 }

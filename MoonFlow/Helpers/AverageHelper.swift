@@ -8,30 +8,47 @@
 import Foundation
 
 struct Period {
-
-    var startDate : Date
-    var endDate : Date
-    var dates : [Date]?
+    var startDate: Date
+    var endDate: Date
+    var dates: [Date]
 
     init(startDate: Date, endDate: Date) {
         self.startDate = startDate
         self.endDate = endDate
         dates = datesBetween(startDate: startDate, endDate: endDate)
     }
-
 }
 
-struct StatisticsResults {
+struct Results {
     var newAverageCycleLength: Int
     var newAveragePeriodLength: Int
+    var predictions: [Date]
 }
 
-func refreshStatistics(dates : [Date]) -> StatisticsResults {
+func refreshAveragesAndPredictions(freshSelectedDates dates: [Date]) -> Results {
+    let periods : [Period] = extractPeriods(dates: dates)
 
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "dd/MM/yyyy"
-    dateFormatter.locale = Locale.current
+    for d in periods.last!.dates {
+        print("+++ \(getDateFormatter().string(from: d))")
+    }
 
+
+    let averageCycleLength = calculateAverageCycleLength(periods: periods)
+    let averagePeriodLength = calculateAveragePeriodLength(periods: periods)
+    let predictions = predictNextYearPeriods(
+        lastPeriod: periods.last!.dates,
+        averageCycleLength: averageCycleLength,
+        averagePeriodLength: averagePeriodLength)
+
+    var results = Results(
+        newAverageCycleLength: averageCycleLength,
+        newAveragePeriodLength: averagePeriodLength,
+        predictions: predictions)
+
+    return results
+}
+
+func extractPeriods(dates: [Date]) -> [Period] {
     let sortedDates : [Date] = dates.sorted(by: { $0 < $1 })
 
     var subsets: [[Date]] = []
@@ -59,25 +76,16 @@ func refreshStatistics(dates : [Date]) -> StatisticsResults {
     for subset in subsets {
         periods.append(Period(startDate: subset.first!, endDate: subset.last!))
     }
-
-    let newStats = StatisticsResults(
-        newAverageCycleLength: computeAverageCycleLength(periods: periods),
-        newAveragePeriodLength: computeAveragePeriodLength(periods: periods))
-
-    print("period: \(newStats.newAveragePeriodLength) cycle : \(newStats.newAverageCycleLength)")
-
-    return newStats
-
+    return periods
 }
 
-private func computeAveragePeriodLength(periods: [Period]) -> Int {
-
+private func calculateAveragePeriodLength(periods: [Period]) -> Int {
     if periods.count > 1 {
 
         var periodLengths = [Int]()
 
         for i in 0..<periods.count {
-            periodLengths.append(periods[i].dates!.count)
+            periodLengths.append(periods[i].dates.count)
         }
 
         let sum = periodLengths.reduce(0, +)
@@ -87,19 +95,18 @@ private func computeAveragePeriodLength(periods: [Period]) -> Int {
 
     } else if periods.count == 1 {
 
-        return periods.first!.dates!.count
+        return periods.first!.dates.count
 
     }
 
     return 7
 }
 
-private func computeAverageCycleLength(periods: [Period]) -> Int {
-
+private func calculateAverageCycleLength(periods: [Period]) -> Int {
     if periods.count > 1 {
-        
-        var intervals = [Int]()
 
+        var intervals = [Int]()
+        
         for i in 1..<periods.count {
 
             let previousDate = periods[i - 1].startDate
@@ -119,5 +126,4 @@ private func computeAverageCycleLength(periods: [Period]) -> Int {
 
     }
     return 28
-
 }
