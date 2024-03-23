@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class PredictionTests: XCTestCase {
+final class PredictionsCalculationTests: XCTestCase {
 
 
 

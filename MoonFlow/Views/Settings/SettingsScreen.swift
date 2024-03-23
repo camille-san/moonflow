@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsScreen: View {
-
+    
     var body: some View {
         VStack {
             Color.gray.opacity(0.3)
@@ -22,7 +22,7 @@ struct SettingsScreen: View {
             Spacer()
         }
     }
-
+    
 }
 
 #Preview {

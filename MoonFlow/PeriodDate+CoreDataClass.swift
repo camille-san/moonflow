@@ -2,7 +2,7 @@
 //  PeriodDate+CoreDataClass.swift
 //  MoonFlow
 //
-//  Created by Camille on 21/3/24.
+//  Created by Camille on 22/3/24.
 //
 //
 
@@ -11,5 +11,5 @@ import CoreData
 
 @objc(PeriodDate)
 public class PeriodDate: NSManagedObject {
-
+    
 }

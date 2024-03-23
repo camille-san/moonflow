@@ -7,6 +7,16 @@
 
 import Foundation
 
+extension Date {
+    func addingDays(_ days: Int) -> Date {
+        if let nextDay: Date = calendar.date(byAdding: .day, value: days, to: self) {
+            return nextDay
+        } else {
+            fatalError("Error when trying to add \(days) days to a Date \(getDateFormatter().string(from: self))")
+        }
+    }
+}
+
 let calendar = Calendar.current
 
 func getDays(month : Int, year : Int) -> [DateContainer] {
@@ -77,11 +87,12 @@ func datesBetween(startDate: Date, endDate: Date) -> [Date] {
     
     while currentDate <= endDate {
         dates.append(currentDate)
-        if let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) {
-            currentDate = nextDate
-        } else {
-            break
-        }
+        currentDate = currentDate.addingDays(1)
+        //        if let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) {
+        //            currentDate = nextDate
+        //        } else {
+        //            break
+        //        }
     }
     
     return dates
@@ -92,8 +103,8 @@ func areDatesConsecutive(firstDate: Date, secondDate: Date) -> Bool {
         return areDatesConsecutive(firstDate: secondDate, secondDate: firstDate)
     }
     
-    let nextDay = calendar.date(byAdding: .day, value: 1, to: firstDate)
-    return calendar.isDate(nextDay!, inSameDayAs: secondDate)
+    //    let nextDay = calendar.date(byAdding: .day, value: 1, to: firstDate)
+    return calendar.isDate(firstDate.addingDays(1), inSameDayAs: secondDate)
 }
 
 func getDateFormatter() -> DateFormatter {

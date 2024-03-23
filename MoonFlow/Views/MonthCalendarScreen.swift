@@ -9,33 +9,32 @@ import SwiftUI
 import CoreData
 
 struct MonthCalendarScreen: View {
-
+    
     @Environment(\.managedObjectContext) private var viewContext
-
+    
     @FetchRequest(sortDescriptors: [])
     private var dates: FetchedResults<PeriodDate>
     @FetchRequest(sortDescriptors: [])
-    private var userInfosList: FetchedResults<UserInfos>
-
+    private var userAverages: FetchedResults<UserAverages>
+    
     @State private var month = calendar.component(.month, from: Date())
     @State private var year = calendar.component(.year, from: Date())
-
+    
     @State private var dayPositions: [Date : CGRect] = [:]
     @State private var tempSelectedDates: [Date] = []
     @State private var next1YearPredictedPeriods: [Date] = []
-
+    
     private let size: CGFloat = 45
     private let generator = UIImpactFeedbackGenerator(style: .medium)
-
-    //    private let calendar = Calendar.current
-    private let todayMonth = Calendar.current.component(.month, from: Date())
-    private let todayYear = Calendar.current.component(.year, from: Date())
-
+    
+    private let todayMonth = calendar.component(.month, from: Date())
+    private let todayYear = calendar.component(.year, from: Date())
+    
     private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
-
+    
     var body: some View {
         VStack {
-
+            
             // MARK: Week Days
             LazyVGrid(columns: columns, spacing: 20) {
                 Group {
@@ -52,7 +51,7 @@ struct MonthCalendarScreen: View {
                 .bold()
             }
             .padding(.horizontal)
-
+            
             // MARK: Month Calendar
             //            Group {
             LazyVGrid(columns: columns) {
@@ -118,7 +117,7 @@ struct MonthCalendarScreen: View {
             //                selectDateRange()
             //            }
             //        )
-
+            
             // MARK: Month Controller
             HStack {
                 Button {
@@ -168,7 +167,7 @@ struct MonthCalendarScreen: View {
             //                selectDateRange()
             //            }
             //        )
-
+            
             // MARK: Today Button
             Button("Today") {
                 goToToday()
@@ -176,7 +175,7 @@ struct MonthCalendarScreen: View {
             Spacer()
         }
         .onAppear {
-            get1YearPredicted(fromDates: dates.map { $0.date }, isInit: true)
+            get1YearPredicted(fromDates: dates.map { $0.date })
         }
         .padding(.top, 48)
         .padding(.horizontal)
@@ -190,21 +189,21 @@ struct MonthCalendarScreen: View {
             }
         )
     }
-
-    private func getUserInfos() -> UserInfos {
-        if userInfosList.count > 0 {
-            return userInfosList.first!
+    
+    private func getUserAverages() -> UserAverages {
+        if userAverages.count > 0 {
+            return userAverages.first!
         } else {
-            let newUserInfos = UserInfos(context: self.viewContext)
+            let newUserAverages = UserAverages(context: viewContext)
             saveContext()
-            return newUserInfos
+            return newUserAverages
         }
     }
-
+    
     private func onClickDate(dateContainer : DateContainer) {
         if dateContainer.isFilled {
             let date: Date = dateContainer.date!
-
+            
             generator.prepare()
             if isSelected(date: date) {
                 removeDate(date: date)
@@ -215,7 +214,7 @@ struct MonthCalendarScreen: View {
             saveNewAveragesAndPredictions(freshResults: refreshAveragesAndPredictions(freshSelectedDates: dates.map { $0.date }))
         }
     }
-
+    
     //    private func selectDatesBasedOnCGPoints(startPoint : CGPoint, endPoint: CGPoint) {
     //        generator.prepare()
     ////        let newStartPoint = CGPoint(x: startPoint.x, y: startPoint.y + (2*size))
@@ -242,61 +241,63 @@ struct MonthCalendarScreen: View {
     //            }
     //        }
     //    }
-
+    
     //    private func selectDateRange() {
     //        if !tempSelectedDates.isEmpty {
     //            statisticsServiceeee.handleSeveralDates(dates: tempSelectedDates)
     //            tempSelectedDates = []
     //        }
     //    }
-
+    
     private func isSelected(date: Date) -> Bool {
         return dates.contains(where: { periodDate in
             return Calendar.current.isDate(periodDate.date, inSameDayAs: date)
         })
     }
-
+    
     private func isPredicted(date: Date) -> Bool {
         return next1YearPredictedPeriods.contains(where: { predictedDate in
             return Calendar.current.isDate(predictedDate, inSameDayAs: date)
         })
     }
-
-    private func get1YearPredicted(fromDates: [Date], isInit: Bool) {
-        let currentPeriods = extractPeriods(dates: fromDates)
-        let lastPeriod = currentPeriods.last!
-        next1YearPredictedPeriods +=
-        predictNextYearPeriods(
-            lastPeriod: lastPeriod.dates,
-            averageCycleLength: Int(getUserInfos().averageCycleLength),
-            averagePeriodLength: Int(getUserInfos().averagePeriodLength))
+    
+    private func get1YearPredicted(fromDates: [Date]) {
+        if !dates.isEmpty {
+            let currentPeriods = extractPeriods(dates: fromDates)
+            let lastPeriod = currentPeriods.last!
+            next1YearPredictedPeriods +=
+            predictNextYearPeriods(
+                lastPeriod: lastPeriod.dates,
+                averageCycleLength: Int(getUserAverages().averageCycleLength),
+                averagePeriodLength: Int(getUserAverages().averagePeriodLength))
+        }
     }
-
+    
     private func insertDate(date: Date) {
         let newDate = PeriodDate(context: viewContext)
         newDate.date = date
         saveContext()
     }
-
+    
     private func removeDate(date: Date) {
         if let dateToRemove = dates.first(where: { $0.date == date }) {
             viewContext.delete(dateToRemove)
             saveContext()
         }
     }
-
+    
     private func saveNewAveragesAndPredictions(freshResults: Results) {
         next1YearPredictedPeriods = freshResults.predictions
-        getUserInfos().averageCycleLength = Int16(freshResults.newAverageCycleLength)
-        getUserInfos().averagePeriodLength = Int16(freshResults.newAveragePeriodLength)
+        getUserAverages().averageCycleLength = Int16(freshResults.newAverageCycleLength)
+        getUserAverages().averagePeriodLength = Int16(freshResults.newAveragePeriodLength)
         saveContext()
     }
-
+    
     private func goToToday() {
         month = todayMonth
         year = todayYear
     }
-
+    
     private func previousMonth() {
         generator.prepare()
         if month == 1 {
@@ -308,7 +309,7 @@ struct MonthCalendarScreen: View {
         dayPositions = [:]
         generator.impactOccurred()
     }
-
+    
     private func nextMonth() {
         generator.prepare()
         if month == 12 {
@@ -319,22 +320,24 @@ struct MonthCalendarScreen: View {
         }
         dayPositions = [:]
         generator.impactOccurred()
-
-        let lastDayOfPrediction: Date = next1YearPredictedPeriods.last!
-
-        if month == calendar.component(.month, from: lastDayOfPrediction) {
-            get1YearPredicted(fromDates: next1YearPredictedPeriods, isInit: false)
+        
+        if !dates.isEmpty {
+            let lastDayOfPrediction: Date = next1YearPredictedPeriods.last!
+            
+            if month == calendar.component(.month, from: lastDayOfPrediction) {
+                get1YearPredicted(fromDates: next1YearPredictedPeriods)
+            }
         }
     }
-
+    
     private func saveContext() {
         do {
-            try self.viewContext.save()
+            try viewContext.save()
         } catch {
             print("Failed to save context: \(error)")
         }
     }
-
+    
 }
 
 #Preview {

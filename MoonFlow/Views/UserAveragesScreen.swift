@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreData
 
-struct UserInfosScreen: View {
+struct UserAveragesScreen: View {
     
     @Environment(\.managedObjectContext) var viewContext
     
@@ -16,8 +16,8 @@ struct UserInfosScreen: View {
     //        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
     //        animation: .default)
     @FetchRequest(sortDescriptors: [])
-    private var userInfosList: FetchedResults<UserInfos>
-
+    private var userAverages: FetchedResults<UserAverages>
+    
     var body: some View {
         VStack {
             Text("Health informations")
@@ -26,13 +26,13 @@ struct UserInfosScreen: View {
                 .padding(.bottom, 24)
             HStack {
                 Text("Average Cycle Length")
-                Text("\(userInfosList[0].averageCycleLength)")
+                Text("\(userAverages[0].averageCycleLength)")
                     .foregroundStyle(Color.accentColor)
                     .bold()
             }
             HStack {
                 Text("Average Period Length")
-                Text("\(userInfosList[0].averagePeriodLength)")
+                Text("\(userAverages[0].averagePeriodLength)")
                     .foregroundStyle(Color.accentColor)
                     .bold()
             }
@@ -42,6 +42,6 @@ struct UserInfosScreen: View {
 }
 
 #Preview {
-    UserInfosScreen()
+    UserAveragesScreen()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
