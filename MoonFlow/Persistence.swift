@@ -148,15 +148,8 @@ struct PersistenceController {
     }
 
     private func populateInitialData(context: NSManagedObjectContext) {
-        let userAverages = UserAverages(context: context)
-        userAverages.averageCycleLength = 28
-        userAverages.averagePeriodLength = 7
-
-        let userSettings = UserSettings(context: context)
-
         let userInfos = UserInfos(context: context)
         userInfos.isReady = false
-
         saveContext(context: context)
     }
 

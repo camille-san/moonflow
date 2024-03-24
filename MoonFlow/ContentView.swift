@@ -39,7 +39,6 @@ struct ContentView: View {
                         }
                         .tag(Tab.user)
                 }
-                .preferredColorScheme(.light)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
