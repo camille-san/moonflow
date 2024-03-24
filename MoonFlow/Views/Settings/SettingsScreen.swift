@@ -37,8 +37,13 @@ struct SettingsScreen: View {
                     viewContext.delete(period)
                 }
 
-                viewContext.delete(averages.first!)
-                viewContext.delete(settings.first!)
+                for av in averages {
+                    viewContext.delete(av)
+                }
+
+                for set in settings {
+                    viewContext.delete(set)
+                }
 
                 do {
                     try self.viewContext.save()

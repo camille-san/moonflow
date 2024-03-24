@@ -454,20 +454,27 @@ struct FirstTimeScreen: View {
     private func makeReady() {
         let userSettings = UserSettings(context: viewContext)
         userSettings.isNotificationEnabled = areNotificationsEnabled
+        print("enabled \(userSettings.isNotificationEnabled)")
 
         let hour = calendar.component(.hour, from: timeOfNotifications)
         let minutes = calendar.component(.minute, from: timeOfNotifications)
 
         userSettings.daysBeforeNotification = Int16(daysBeforeNotifications)
+        print("-days \(userSettings.daysBeforeNotification)")
         userSettings.hourOfNotification = Int16(hour)
+        print("hours \(userSettings.hourOfNotification)")
         userSettings.minutesOfNotification = Int16(minutes)
+        print("minutes \(userSettings.minutesOfNotification)")
 
         let userAverages = UserAverages(context: viewContext)
         userAverages.averagePeriodLength = Int16(tempPeriodLength)
+        print("period length \(userAverages.averagePeriodLength)")
         userAverages.averageCycleLength = Int16(tempCycleLength)
+        print("cycle length \(userAverages.averageCycleLength)")
 
         let userInfos = getUserInfos()
         userInfos.name = name
+        print("name \(userInfos.name!)")
 
         if let date = firstDayLastPeriod {
             let firstPeriodDay = PeriodDate(context: viewContext)

@@ -16,9 +16,7 @@ func predictNextYearPeriods(lastPeriod dates: [Date], averageCycleLength: Int, a
         let count = averagePeriodLength - dates.count
         let lastDate = dates.last!
         let nextPredictedLastDay = lastDate.addingDays(count)
-        //        let nextPredictedLastDay = calendar.date(byAdding: .day, value: count, to: lastDate)!
         let nextPredictedStartDay = lastDate.addingDays(1)
-        //        let nextPredictedStartDay = calendar.date(byAdding: .day, value: 1, to: lastDate)!
         nextPredictedPeriodDays += datesBetween(startDate: nextPredictedStartDay, endDate: nextPredictedLastDay)
     }
     

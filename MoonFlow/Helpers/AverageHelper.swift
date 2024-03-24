@@ -25,16 +25,19 @@ struct Results {
     var predictions: [Date]
 }
 
-func refreshAveragesAndPredictions(freshSelectedDates dates: [Date]) -> Results {
+func refreshAveragesAndPredictions(freshSelectedDates dates: [Date], oldAveragePeriodLength: Int, oldAverageCycleLength: Int) -> Results {
     let periods : [Period] = extractPeriods(dates: dates)
     
-    for d in periods.last!.dates {
-        print("+++ \(getDateFormatter().string(from: d))")
+    var averagePeriodLength = oldAveragePeriodLength
+    var averageCycleLength = oldAverageCycleLength
+    
+    if periods.count > 1 {
+        averageCycleLength = calculateAverageCycleLength(periods: periods)
+        averagePeriodLength = calculateAveragePeriodLength(periods: periods)
+    } else if periods.count == 1 && periods.first!.dates.count > oldAveragePeriodLength {
+        averagePeriodLength = periods.first!.dates.count
     }
     
-    
-    let averageCycleLength = calculateAverageCycleLength(periods: periods)
-    let averagePeriodLength = calculateAveragePeriodLength(periods: periods)
     let predictions = predictNextYearPeriods(
         lastPeriod: periods.last!.dates,
         averageCycleLength: averageCycleLength,
