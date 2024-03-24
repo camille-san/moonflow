@@ -37,7 +37,7 @@ func refreshAveragesAndPredictions(freshSelectedDates dates: [Date], oldAverageP
     } else if periods.count == 1 && periods.first!.dates.count > oldAveragePeriodLength {
         averagePeriodLength = periods.first!.dates.count
     }
-    
+
     let predictions = predictNextYearPeriods(
         lastPeriod: periods.last!.dates,
         averageCycleLength: averageCycleLength,

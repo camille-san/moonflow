@@ -12,7 +12,7 @@
         <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
     <entity name="UserSettings" representedClassName="UserSettings" syncable="YES">
-        <attribute name="daysBeforeNotification" attributeType="Integer 16" minValueString="1" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="daysBeforeNotification" attributeType="Integer 16" minValueString="0" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="hourOfNotification" attributeType="Integer 16" minValueString="0" maxValueString="24" defaultValueString="9" usesScalarValueType="YES"/>
         <attribute name="isNotificationEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="minutesOfNotification" attributeType="Integer 16" minValueString="0" maxValueString="30" defaultValueString="0" usesScalarValueType="YES"/>

@@ -18,26 +18,40 @@ struct UserAveragesScreen: View {
     @FetchRequest(sortDescriptors: [])
     private var userAverages: FetchedResults<UserAverages>
 
+    private let size: CGFloat = 45
+
     var body: some View {
-VStack {
-                Text("Health informations")
-                    .font(.title)
-                    .bold()
-                    .padding(.bottom, 24)
-                HStack {
-                    Text("Average Cycle Length")
+        VStack {
+            Text("Your informations")
+                .font(.title)
+                .bold()
+                .padding(.bottom, 24)
+            HStack (alignment: .top) {
+                VStack {
                     Text("\(userAverages[0].averageCycleLength)")
-                        .foregroundStyle(Color.accentColor)
+                        .foregroundStyle(.black)
                         .bold()
-                }
-                HStack {
-                    Text("Average Period Length")
-                    Text("\(userAverages[0].averagePeriodLength)")
-                        .foregroundStyle(Color.accentColor)
-                        .bold()
+                        .frame(width: size, height: size)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(lineWidth: 2.5).fill(.accent))
+                    Text("Average Cycle Length")
+                        .multilineTextAlignment(.center)
                 }
                 Spacer()
+                VStack {
+                    Text("\(userAverages[0].averagePeriodLength)")
+                        .foregroundStyle(.black)
+                        .bold()
+                        .frame(width: size, height: size)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(lineWidth: 2.5).fill(.accent))
+                    Text("Average Period Length")
+                        .multilineTextAlignment(.center)
+                }
             }
+            Spacer()
+        }
+        .padding(.horizontal, 58)
     }
 }
 

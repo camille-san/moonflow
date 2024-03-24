@@ -17,6 +17,7 @@ struct MoonFlowApp: App {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .preferredColorScheme(.light)
+                .font(.system(.body, design: .rounded))
         }
     }
     

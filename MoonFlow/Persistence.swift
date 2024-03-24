@@ -108,12 +108,7 @@ struct PersistenceController {
         let userInfos = UserInfos(context: viewContext)
         userInfos.name = "Camille"
 
-        do {
-            try viewContext.save()
-        } catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
+        saveContext(viewContext)
 
         return result
     }()
@@ -150,16 +145,16 @@ struct PersistenceController {
     private func populateInitialData(context: NSManagedObjectContext) {
         let userInfos = UserInfos(context: context)
         userInfos.isReady = false
-        saveContext(context: context)
+        saveContext(context)
     }
 
-    private func saveContext(context: NSManagedObjectContext) {
-        do {
-            try context.save()
-        } catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }
-    }
+}
 
+func saveContext(_ context: NSManagedObjectContext) {
+    do {
+        try context.save()
+    } catch {
+        let nsError = error as NSError
+        fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+    }
 }

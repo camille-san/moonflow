@@ -36,6 +36,7 @@
 		915BB1912BAE2CA60013B25F /* UserAverages+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1892BAE2CA60013B25F /* UserAverages+CoreDataProperties.swift */; };
 		915BB1942BAE41AA0013B25F /* UserInfos+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1922BAE41AA0013B25F /* UserInfos+CoreDataClass.swift */; };
 		915BB1952BAE41AA0013B25F /* UserInfos+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1932BAE41AA0013B25F /* UserInfos+CoreDataProperties.swift */; };
+		91906CA12BB085DC007153E1 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91906CA02BB085DC007153E1 /* NotificationsHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		915BB1892BAE2CA60013B25F /* UserAverages+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserAverages+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		915BB1922BAE41AA0013B25F /* UserInfos+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfos+CoreDataClass.swift"; sourceTree = "<group>"; };
 		915BB1932BAE41AA0013B25F /* UserInfos+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfos+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		91906CA02BB085DC007153E1 /* NotificationsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +215,7 @@
 				914B745F2BACBAB80068D19D /* DateHelper.swift */,
 				914B74612BACBAEE0068D19D /* AverageHelper.swift */,
 				915BB17E2BADDC160013B25F /* PredictionHelper.swift */,
+				91906CA02BB085DC007153E1 /* NotificationsHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 				914B74852BACC83D0068D19D /* UserAveragesScreen.swift in Sources */,
 				914B74562BACB7C20068D19D /* MonthCalendarScreen.swift in Sources */,
 				914B74622BACBAEE0068D19D /* AverageHelper.swift in Sources */,
+				91906CA12BB085DC007153E1 /* NotificationsHelper.swift in Sources */,
 				914B74282BACB2DD0068D19D /* MoonFlow.xcdatamodeld in Sources */,
 				915BB18A2BAE2CA60013B25F /* UserSettings+CoreDataClass.swift in Sources */,
 				915BB18B2BAE2CA60013B25F /* UserSettings+CoreDataProperties.swift in Sources */,

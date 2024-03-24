@@ -15,10 +15,11 @@ struct ContentView: View {
     
     @State private var selection: Tab = .calendar
     @State private var showSettings = false
-    
+    @State private var predictions = [Date]()
+
     @FetchRequest(sortDescriptors: [])
     private var userInfos: FetchedResults<UserInfos>
-    
+
     enum Tab {
         case calendar
         case user
@@ -28,7 +29,7 @@ struct ContentView: View {
         if getUserInfos().isReady {
             NavigationView {
                 TabView(selection: $selection) {
-                    MonthCalendarScreen()
+                    MonthCalendarScreen(predictions: $predictions)
                         .tabItem {
                             Label("Calendar", systemImage: "calendar")
                         }
@@ -49,7 +50,7 @@ struct ContentView: View {
                     }
                 }
                 .sheet(isPresented: $showSettings) {
-                    SettingsScreen()
+                    SettingsScreen(isSheetOpened: $showSettings, predictions: $predictions)
                 }
             }
         } else {
@@ -64,7 +65,7 @@ struct ContentView: View {
             fatalError("Initialization of database error")
         }
     }
-    
+
 }
 
 #Preview {

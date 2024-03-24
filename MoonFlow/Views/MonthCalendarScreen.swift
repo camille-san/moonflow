@@ -16,13 +16,17 @@ struct MonthCalendarScreen: View {
     private var dates: FetchedResults<PeriodDate>
     @FetchRequest(sortDescriptors: [])
     private var userAverages: FetchedResults<UserAverages>
+    @FetchRequest(sortDescriptors: [])
+    private var userSettings: FetchedResults<UserSettings>
+
+    @Binding var predictions: [Date]
 
     @State private var month = calendar.component(.month, from: Date())
     @State private var year = calendar.component(.year, from: Date())
 
     @State private var dayPositions: [Date : CGRect] = [:]
     @State private var tempSelectedDates: [Date] = []
-    @State private var next1YearPredictedPeriods: [Date] = []
+//    @State private var next1YearPredictedPeriods: [Date] = []
 
     private let size: CGFloat = 45
     private let generator = UIImpactFeedbackGenerator(style: .medium)
@@ -30,7 +34,7 @@ struct MonthCalendarScreen: View {
     private let todayMonth = calendar.component(.month, from: Date())
     private let todayYear = calendar.component(.year, from: Date())
 
-    private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
+    private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 7)
 
     var body: some View {
         VStack {
@@ -124,7 +128,7 @@ struct MonthCalendarScreen: View {
                     previousMonth()
                 } label : {
                     Image(systemName: "chevron.left")
-                        .font(.system(size: 28))
+                        .font(.system(size: 20))
                         .foregroundStyle(.black)
                         .padding()
                         .background(.gray.opacity(0.1))
@@ -137,13 +141,12 @@ struct MonthCalendarScreen: View {
                     Text("\(String(year))")
                 }
                 .font(.system(size: 24))
-                .foregroundStyle(Color.accentColor)
                 Spacer()
                 Button {
                     nextMonth()
                 } label : {
                     Image(systemName: "chevron.right")
-                        .font(.system(size: 28))
+                        .font(.system(size: 20))
                         .foregroundStyle(.black)
                         .padding()
                         .background(.gray.opacity(0.1))
@@ -175,7 +178,7 @@ struct MonthCalendarScreen: View {
             Spacer()
         }
         .onAppear {
-            get1YearPredicted(fromDates: dates.map { $0.date })
+            append1YearPredicted(fromDates: dates.map { $0.date })
         }
         .padding(.top, 48)
         .padding(.horizontal)
@@ -188,16 +191,6 @@ struct MonthCalendarScreen: View {
                 }
             }
         )
-    }
-
-    private func getUserAverages() -> UserAverages {
-        if userAverages.count > 0 {
-            return userAverages.first!
-        } else {
-            let newUserAverages = UserAverages(context: viewContext)
-            saveContext()
-            return newUserAverages
-        }
     }
 
     private func onClickDate(dateContainer : DateContainer) {
@@ -216,8 +209,8 @@ struct MonthCalendarScreen: View {
                 freshResults:
                     refreshAveragesAndPredictions(
                         freshSelectedDates: dates.map { $0.date },
-                        oldAveragePeriodLength: Int(getUserAverages().averagePeriodLength),
-                        oldAverageCycleLength: Int(getUserAverages().averageCycleLength)))
+                        oldAveragePeriodLength: Int(userAverages.first!.averagePeriodLength),
+                        oldAverageCycleLength: Int(userAverages.first!.averageCycleLength)))
         }
     }
 
@@ -262,43 +255,56 @@ struct MonthCalendarScreen: View {
     }
 
     private func isPredicted(date: Date) -> Bool {
-        return next1YearPredictedPeriods.contains(where: { predictedDate in
+        return predictions.contains(where: { predictedDate in
             return Calendar.current.isDate(predictedDate, inSameDayAs: date)
         })
     }
 
-    private func get1YearPredicted(fromDates: [Date]) {
+    private func append1YearPredicted(fromDates: [Date]) {
         if !dates.isEmpty {
-            let currentPeriods = extractPeriods(dates: fromDates)
-            let lastPeriod = currentPeriods.last!
-            next1YearPredictedPeriods +=
+            let currentDatesAsPeriods = extractPeriods(dates: fromDates)
+            let lastPeriod = currentDatesAsPeriods.last!
+            predictions +=
             predictNextYearPeriods(
                 lastPeriod: lastPeriod.dates,
-                averageCycleLength: Int(getUserAverages().averageCycleLength),
-                averagePeriodLength: Int(getUserAverages().averagePeriodLength))
-        } else {
-            print("no dates")
+                averageCycleLength: Int(userAverages.first!.averageCycleLength),
+                averagePeriodLength: Int(userAverages.first!.averagePeriodLength))
         }
     }
 
     private func insertDate(date: Date) {
         let newDate = PeriodDate(context: viewContext)
         newDate.date = date
-        saveContext()
+        saveContext(viewContext)
     }
 
     private func removeDate(date: Date) {
         if let dateToRemove = dates.first(where: { $0.date == date }) {
             viewContext.delete(dateToRemove)
-            saveContext()
+            saveContext(viewContext)
         }
     }
 
     private func saveNewAveragesAndPredictions(freshResults: Results) {
-        next1YearPredictedPeriods = freshResults.predictions
-        getUserAverages().averageCycleLength = Int16(freshResults.newAverageCycleLength)
-        getUserAverages().averagePeriodLength = Int16(freshResults.newAveragePeriodLength)
-        saveContext()
+        predictions = freshResults.predictions
+
+        userAverages.first!.averageCycleLength = Int16(freshResults.newAverageCycleLength)
+        userAverages.first!.averagePeriodLength = Int16(freshResults.newAveragePeriodLength)
+        saveContext(viewContext)
+
+        if !predictions.isEmpty {
+            print("CREATING NOTIFICATION IN REFRESH")
+
+            let dateOfNotification = calculateDayOfNotification(
+                dayOfFirstPredictedPeriod: predictions.first!,
+                settings: userSettings.first!)
+
+            print("FIRST DATE OF PREDICTIONS: \(getDateFormatter().string(from: predictions.first!))")
+            print("DAYS BEFORE \(userSettings.first!.daysBeforeNotification)")
+            print("DATE OF NOTIF: \(getDateFormatterWithTime().string(from: dateOfNotification))")
+
+            emptyAndAddNewNotification(dateOfNotification: dateOfNotification, settings: userSettings.first!)
+        }
     }
 
     private func goToToday() {
@@ -330,25 +336,17 @@ struct MonthCalendarScreen: View {
         generator.impactOccurred()
 
         if !dates.isEmpty {
-            let lastDayOfPrediction: Date = next1YearPredictedPeriods.last!
+            let lastDayOfPrediction: Date = predictions.last!
 
             if month == calendar.component(.month, from: lastDayOfPrediction) {
-                get1YearPredicted(fromDates: next1YearPredictedPeriods)
+                append1YearPredicted(fromDates: predictions)
             }
         }
     }
-
-    private func saveContext() {
-        do {
-            try viewContext.save()
-        } catch {
-            print("Failed to save context: \(error)")
-        }
-    }
-
+    
 }
 
 #Preview {
-    MonthCalendarScreen()
+    MonthCalendarScreen(predictions: .constant([Date]()))
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
