@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import WidgetKit
 
 struct MonthCalendarScreen: View {
 
@@ -24,8 +25,8 @@ struct MonthCalendarScreen: View {
     @State private var month = calendar.component(.month, from: Date())
     @State private var year = calendar.component(.year, from: Date())
 
-//    @State private var dayPositions: [Date : CGRect] = [:]
-//    @State private var tempSelectedDates: [Date] = []
+    //    @State private var dayPositions: [Date : CGRect] = [:]
+    //    @State private var tempSelectedDates: [Date] = []
 
     private let size: CGFloat = 40
     private let generator = UIImpactFeedbackGenerator(style: .light)
@@ -81,13 +82,13 @@ struct MonthCalendarScreen: View {
                     .font(.system(size: 16,
                                   weight: .medium))
                     .clipShape(Circle())
-//                    .overlay{
-//                        if day.isFilled && tempSelectedDates.contains(day.date!) {
-//                            Color.yellow
-//                                .opacity(0.2)
-//                                .clipShape(Circle())
-//                        }
-//                    }
+                    //                    .overlay{
+                    //                        if day.isFilled && tempSelectedDates.contains(day.date!) {
+                    //                            Color.yellow
+                    //                                .opacity(0.2)
+                    //                                .clipShape(Circle())
+                    //                        }
+                    //                    }
                     .overlay {
                         if day.isFilled && calendar.isDateInToday(day.date!) {
                             Circle().stroke(Color.accentColor, lineWidth: 2)
@@ -300,7 +301,9 @@ struct MonthCalendarScreen: View {
         userAverages.first!.averagePeriodLength = Int16(freshResults.newAveragePeriodLength)
         saveContext(viewContext)
 
-createNotification()
+        WidgetCenter.shared.reloadAllTimelines()
+
+        createNotification()
     }
 
     private func createNotification() {
@@ -318,27 +321,27 @@ createNotification()
     }
 
     private func previousMonth() {
-//        generator.prepare()
+        //        generator.prepare()
         if month == 1 {
             month = 12
             year -= 1
         } else {
             month -= 1
         }
-//        dayPositions = [:]
-//        generator.impactOccurred()
+        //        dayPositions = [:]
+        //        generator.impactOccurred()
     }
 
     private func nextMonth() {
-//        generator.prepare()
+        //        generator.prepare()
         if month == 12 {
             month = 1
             year += 1
         } else {
             month += 1
         }
-//        dayPositions = [:]
-//        generator.impactOccurred()
+        //        dayPositions = [:]
+        //        generator.impactOccurred()
 
         if !dates.isEmpty {
             let lastDayOfPrediction: Date = predictions.last!
@@ -348,7 +351,7 @@ createNotification()
             }
         }
     }
-    
+
 }
 
 #Preview {

@@ -14,7 +14,9 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
 
-        let dateFormatter = getDateFormatter()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        dateFormatter.locale = Locale.current
 
         let date1 = PeriodDate(context: viewContext)
         date1.date = dateFormatter.date(from: "30/10/2023")!
@@ -115,10 +117,39 @@ struct PersistenceController {
 
     let container: NSPersistentContainer
 
+
+//    init(inMemory: Bool = false) {
+//        container = NSPersistentContainer(name: "MoonFlow")
+//        if inMemory {
+//            container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+//        } else {
+//            // Ensure the container uses the shared App Group directory
+//            let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.yourcompany.MoonFlow")
+//            let url = directory!.appendingPathComponent("MoonFlow.sqlite")
+//            let description = NSPersistentStoreDescription(url: url)
+//            container.persistentStoreDescriptions = [description]
+//        }
+//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+//            if let error = error as NSError? {
+//                fatalError("Unresolved error \(error), \(error.userInfo)")
+//            }
+//        })
+//        container.viewContext.automaticallyMergesChangesFromParent = true
+//    }
+
+
+
+
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "MoonFlow")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+        } else {
+            // Ensure the container uses the shared App Group directory
+            let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.io.camimaki.MoonFlow")
+            let url = directory!.appendingPathComponent("MoonFlow.sqlite")
+            let description = NSPersistentStoreDescription(url: url)
+            container.persistentStoreDescriptions = [description]
         }
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {

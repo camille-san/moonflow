@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9131C8E82BB21E1100B09CDA /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B74242BACB2DD0068D19D /* Persistence.swift */; };
+		9131C8E92BB21E1500B09CDA /* MoonFlow.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 914B74262BACB2DD0068D19D /* MoonFlow.xcdatamodeld */; };
+		9131C8EA2BB21E1700B09CDA /* UserSettings+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1822BAE2CA60013B25F /* UserSettings+CoreDataClass.swift */; };
+		9131C8EB2BB21E1A00B09CDA /* UserSettings+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1832BAE2CA60013B25F /* UserSettings+CoreDataProperties.swift */; };
+		9131C8EC2BB21E1D00B09CDA /* UserInfos+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1922BAE41AA0013B25F /* UserInfos+CoreDataClass.swift */; };
+		9131C8ED2BB21E1F00B09CDA /* UserInfos+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1932BAE41AA0013B25F /* UserInfos+CoreDataProperties.swift */; };
+		9131C8EE2BB21E2200B09CDA /* PeriodDate+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1862BAE2CA60013B25F /* PeriodDate+CoreDataClass.swift */; };
+		9131C8EF2BB21E2500B09CDA /* PeriodDate+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1872BAE2CA60013B25F /* PeriodDate+CoreDataProperties.swift */; };
+		9131C8F02BB21E2800B09CDA /* UserAverages+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1882BAE2CA60013B25F /* UserAverages+CoreDataClass.swift */; };
+		9131C8F12BB21E2B00B09CDA /* UserAverages+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1892BAE2CA60013B25F /* UserAverages+CoreDataProperties.swift */; };
+		9131C8F42BB226DE00B09CDA /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9131C8F22BB226DE00B09CDA /* DataManager.swift */; };
 		914B741C2BACB2DC0068D19D /* MoonFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B741B2BACB2DC0068D19D /* MoonFlowApp.swift */; };
 		914B741E2BACB2DC0068D19D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B741D2BACB2DC0068D19D /* ContentView.swift */; };
 		914B74202BACB2DD0068D19D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 914B741F2BACB2DD0068D19D /* Assets.xcassets */; };
@@ -36,6 +47,12 @@
 		915BB1912BAE2CA60013B25F /* UserAverages+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1892BAE2CA60013B25F /* UserAverages+CoreDataProperties.swift */; };
 		915BB1942BAE41AA0013B25F /* UserInfos+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1922BAE41AA0013B25F /* UserInfos+CoreDataClass.swift */; };
 		915BB1952BAE41AA0013B25F /* UserInfos+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BB1932BAE41AA0013B25F /* UserInfos+CoreDataProperties.swift */; };
+		915DA4A42BB2171700633C98 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915DA4872BB20DDE00633C98 /* WidgetKit.framework */; };
+		915DA4A52BB2171700633C98 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 915DA4892BB20DDF00633C98 /* SwiftUI.framework */; };
+		915DA4A82BB2171700633C98 /* AddTodayWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915DA4A72BB2171700633C98 /* AddTodayWidgetBundle.swift */; };
+		915DA4AA2BB2171700633C98 /* AddTodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915DA4A92BB2171700633C98 /* AddTodayWidget.swift */; };
+		915DA4AC2BB2171800633C98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 915DA4AB2BB2171800633C98 /* Assets.xcassets */; };
+		915DA4B02BB2171800633C98 /* AddTodayWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 915DA4A32BB2171700633C98 /* AddTodayWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		91906CA12BB085DC007153E1 /* NotificationsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91906CA02BB085DC007153E1 /* NotificationsHelper.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,9 +71,33 @@
 			remoteGlobalIDString = 914B74172BACB2DC0068D19D;
 			remoteInfo = MoonFlow;
 		};
+		915DA4AE2BB2171800633C98 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 914B74102BACB2DC0068D19D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 915DA4A22BB2171700633C98;
+			remoteInfo = AddTodayWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		915DA49D2BB20DDF00633C98 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				915DA4B02BB2171800633C98 /* AddTodayWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		9131C8F22BB226DE00B09CDA /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		9131C8F52BB2348F00B09CDA /* MoonFlow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoonFlow.entitlements; sourceTree = "<group>"; };
+		9131C8F62BB234C700B09CDA /* AddTodayWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AddTodayWidgetExtension.entitlements; sourceTree = "<group>"; };
 		914B74182BACB2DC0068D19D /* MoonFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoonFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		914B741B2BACB2DC0068D19D /* MoonFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonFlowApp.swift; sourceTree = "<group>"; };
 		914B741D2BACB2DC0068D19D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -89,6 +130,13 @@
 		915BB1892BAE2CA60013B25F /* UserAverages+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserAverages+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		915BB1922BAE41AA0013B25F /* UserInfos+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfos+CoreDataClass.swift"; sourceTree = "<group>"; };
 		915BB1932BAE41AA0013B25F /* UserInfos+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfos+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		915DA4872BB20DDE00633C98 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		915DA4892BB20DDF00633C98 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		915DA4A32BB2171700633C98 /* AddTodayWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AddTodayWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		915DA4A72BB2171700633C98 /* AddTodayWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodayWidgetBundle.swift; sourceTree = "<group>"; };
+		915DA4A92BB2171700633C98 /* AddTodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodayWidget.swift; sourceTree = "<group>"; };
+		915DA4AB2BB2171800633C98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		915DA4AD2BB2171800633C98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91906CA02BB085DC007153E1 /* NotificationsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,15 +162,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		915DA4A02BB2171700633C98 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				915DA4A52BB2171700633C98 /* SwiftUI.framework in Frameworks */,
+				915DA4A42BB2171700633C98 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		914B740F2BACB2DC0068D19D = {
 			isa = PBXGroup;
 			children = (
+				9131C8F62BB234C700B09CDA /* AddTodayWidgetExtension.entitlements */,
 				914B741A2BACB2DC0068D19D /* MoonFlow */,
+				915DA49E2BB20FD900633C98 /* Shared */,
 				914B74302BACB2DD0068D19D /* MoonFlowTests */,
 				914B743A2BACB2DD0068D19D /* MoonFlowUITests */,
+				915DA4A62BB2171700633C98 /* AddTodayWidget */,
+				915DA4862BB20DDE00633C98 /* Frameworks */,
 				914B74192BACB2DC0068D19D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -133,6 +194,7 @@
 				914B74182BACB2DC0068D19D /* MoonFlow.app */,
 				914B742D2BACB2DD0068D19D /* MoonFlowTests.xctest */,
 				914B74372BACB2DD0068D19D /* MoonFlowUITests.xctest */,
+				915DA4A32BB2171700633C98 /* AddTodayWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -140,22 +202,13 @@
 		914B741A2BACB2DC0068D19D /* MoonFlow */ = {
 			isa = PBXGroup;
 			children = (
+				9131C8F52BB2348F00B09CDA /* MoonFlow.entitlements */,
 				914B741B2BACB2DC0068D19D /* MoonFlowApp.swift */,
 				914B741D2BACB2DC0068D19D /* ContentView.swift */,
+				914B741F2BACB2DD0068D19D /* Assets.xcassets */,
 				914B74572BACB7EB0068D19D /* Model */,
 				914B74542BACB77C0068D19D /* Views */,
 				914B745E2BACBAA10068D19D /* Helpers */,
-				914B74242BACB2DD0068D19D /* Persistence.swift */,
-				914B74262BACB2DD0068D19D /* MoonFlow.xcdatamodeld */,
-				915BB1822BAE2CA60013B25F /* UserSettings+CoreDataClass.swift */,
-				915BB1832BAE2CA60013B25F /* UserSettings+CoreDataProperties.swift */,
-				915BB1922BAE41AA0013B25F /* UserInfos+CoreDataClass.swift */,
-				915BB1932BAE41AA0013B25F /* UserInfos+CoreDataProperties.swift */,
-				915BB1862BAE2CA60013B25F /* PeriodDate+CoreDataClass.swift */,
-				915BB1872BAE2CA60013B25F /* PeriodDate+CoreDataProperties.swift */,
-				915BB1882BAE2CA60013B25F /* UserAverages+CoreDataClass.swift */,
-				915BB1892BAE2CA60013B25F /* UserAverages+CoreDataProperties.swift */,
-				914B741F2BACB2DD0068D19D /* Assets.xcassets */,
 				914B74212BACB2DD0068D19D /* Preview Content */,
 			);
 			path = MoonFlow;
@@ -236,6 +289,44 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		915DA4862BB20DDE00633C98 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				915DA4872BB20DDE00633C98 /* WidgetKit.framework */,
+				915DA4892BB20DDF00633C98 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		915DA49E2BB20FD900633C98 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				914B74242BACB2DD0068D19D /* Persistence.swift */,
+				914B74262BACB2DD0068D19D /* MoonFlow.xcdatamodeld */,
+				915BB1822BAE2CA60013B25F /* UserSettings+CoreDataClass.swift */,
+				915BB1832BAE2CA60013B25F /* UserSettings+CoreDataProperties.swift */,
+				915BB1922BAE41AA0013B25F /* UserInfos+CoreDataClass.swift */,
+				915BB1932BAE41AA0013B25F /* UserInfos+CoreDataProperties.swift */,
+				915BB1862BAE2CA60013B25F /* PeriodDate+CoreDataClass.swift */,
+				915BB1872BAE2CA60013B25F /* PeriodDate+CoreDataProperties.swift */,
+				915BB1882BAE2CA60013B25F /* UserAverages+CoreDataClass.swift */,
+				915BB1892BAE2CA60013B25F /* UserAverages+CoreDataProperties.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		915DA4A62BB2171700633C98 /* AddTodayWidget */ = {
+			isa = PBXGroup;
+			children = (
+				9131C8F22BB226DE00B09CDA /* DataManager.swift */,
+				915DA4A72BB2171700633C98 /* AddTodayWidgetBundle.swift */,
+				915DA4A92BB2171700633C98 /* AddTodayWidget.swift */,
+				915DA4AB2BB2171800633C98 /* Assets.xcassets */,
+				915DA4AD2BB2171800633C98 /* Info.plist */,
+			);
+			path = AddTodayWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -246,10 +337,12 @@
 				914B74142BACB2DC0068D19D /* Sources */,
 				914B74152BACB2DC0068D19D /* Frameworks */,
 				914B74162BACB2DC0068D19D /* Resources */,
+				915DA49D2BB20DDF00633C98 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				915DA4AF2BB2171800633C98 /* PBXTargetDependency */,
 			);
 			name = MoonFlow;
 			productName = MoonFlow;
@@ -292,6 +385,23 @@
 			productReference = 914B74372BACB2DD0068D19D /* MoonFlowUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		915DA4A22BB2171700633C98 /* AddTodayWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 915DA4B12BB2171800633C98 /* Build configuration list for PBXNativeTarget "AddTodayWidgetExtension" */;
+			buildPhases = (
+				915DA49F2BB2171700633C98 /* Sources */,
+				915DA4A02BB2171700633C98 /* Frameworks */,
+				915DA4A12BB2171700633C98 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AddTodayWidgetExtension;
+			productName = AddTodayWidgetExtension;
+			productReference = 915DA4A32BB2171700633C98 /* AddTodayWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -313,6 +423,9 @@
 						CreatedOnToolsVersion = 15.3;
 						TestTargetID = 914B74172BACB2DC0068D19D;
 					};
+					915DA4A22BB2171700633C98 = {
+						CreatedOnToolsVersion = 15.3;
+					};
 				};
 			};
 			buildConfigurationList = 914B74132BACB2DC0068D19D /* Build configuration list for PBXProject "MoonFlow" */;
@@ -331,6 +444,7 @@
 				914B74172BACB2DC0068D19D /* MoonFlow */,
 				914B742C2BACB2DD0068D19D /* MoonFlowTests */,
 				914B74362BACB2DD0068D19D /* MoonFlowUITests */,
+				915DA4A22BB2171700633C98 /* AddTodayWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -356,6 +470,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		915DA4A12BB2171700633C98 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				915DA4AC2BB2171800633C98 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +533,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		915DA49F2BB2171700633C98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9131C8EF2BB21E2500B09CDA /* PeriodDate+CoreDataProperties.swift in Sources */,
+				9131C8EC2BB21E1D00B09CDA /* UserInfos+CoreDataClass.swift in Sources */,
+				9131C8E82BB21E1100B09CDA /* Persistence.swift in Sources */,
+				915DA4A82BB2171700633C98 /* AddTodayWidgetBundle.swift in Sources */,
+				9131C8EA2BB21E1700B09CDA /* UserSettings+CoreDataClass.swift in Sources */,
+				9131C8EE2BB21E2200B09CDA /* PeriodDate+CoreDataClass.swift in Sources */,
+				9131C8F02BB21E2800B09CDA /* UserAverages+CoreDataClass.swift in Sources */,
+				9131C8E92BB21E1500B09CDA /* MoonFlow.xcdatamodeld in Sources */,
+				9131C8F12BB21E2B00B09CDA /* UserAverages+CoreDataProperties.swift in Sources */,
+				915DA4AA2BB2171700633C98 /* AddTodayWidget.swift in Sources */,
+				9131C8ED2BB21E1F00B09CDA /* UserInfos+CoreDataProperties.swift in Sources */,
+				9131C8F42BB226DE00B09CDA /* DataManager.swift in Sources */,
+				9131C8EB2BB21E1A00B09CDA /* UserSettings+CoreDataProperties.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -423,6 +565,11 @@
 			isa = PBXTargetDependency;
 			target = 914B74172BACB2DC0068D19D /* MoonFlow */;
 			targetProxy = 914B74382BACB2DD0068D19D /* PBXContainerItemProxy */;
+		};
+		915DA4AF2BB2171800633C98 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 915DA4A22BB2171700633C98 /* AddTodayWidgetExtension */;
+			targetProxy = 915DA4AE2BB2171800633C98 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -549,8 +696,10 @@
 		914B74422BACB2DD0068D19D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MoonFlow/MoonFlow.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MoonFlow/Preview Content\"";
@@ -581,8 +730,10 @@
 		914B74432BACB2DD0068D19D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MoonFlow/MoonFlow.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MoonFlow/Preview Content\"";
@@ -688,6 +839,64 @@
 			};
 			name = Release;
 		};
+		915DA4B22BB2171800633C98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = AddTodayWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q4C4Y6CJ8F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AddTodayWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AddTodayWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.camimaki.MoonFlow.AddTodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		915DA4B32BB2171800633C98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = AddTodayWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q4C4Y6CJ8F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AddTodayWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AddTodayWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.camimaki.MoonFlow.AddTodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -723,6 +932,15 @@
 			buildConfigurations = (
 				914B74482BACB2DD0068D19D /* Debug */,
 				914B74492BACB2DD0068D19D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		915DA4B12BB2171800633C98 /* Build configuration list for PBXNativeTarget "AddTodayWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				915DA4B22BB2171800633C98 /* Debug */,
+				915DA4B32BB2171800633C98 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
