@@ -24,12 +24,11 @@ struct MonthCalendarScreen: View {
     @State private var month = calendar.component(.month, from: Date())
     @State private var year = calendar.component(.year, from: Date())
 
-    @State private var dayPositions: [Date : CGRect] = [:]
-    @State private var tempSelectedDates: [Date] = []
-//    @State private var next1YearPredictedPeriods: [Date] = []
+//    @State private var dayPositions: [Date : CGRect] = [:]
+//    @State private var tempSelectedDates: [Date] = []
 
-    private let size: CGFloat = 45
-    private let generator = UIImpactFeedbackGenerator(style: .medium)
+    private let size: CGFloat = 40
+    private let generator = UIImpactFeedbackGenerator(style: .light)
 
     private let todayMonth = calendar.component(.month, from: Date())
     private let todayYear = calendar.component(.year, from: Date())
@@ -39,7 +38,8 @@ struct MonthCalendarScreen: View {
     var body: some View {
         VStack {
 
-            // MARK: Week Days
+            // --------------------------------------------------------------------------------
+            // MARK: Week Days Columns
             LazyVGrid(columns: columns, spacing: 20) {
                 Group {
                     Text("M")
@@ -56,8 +56,8 @@ struct MonthCalendarScreen: View {
             }
             .padding(.horizontal)
 
+            // --------------------------------------------------------------------------------
             // MARK: Month Calendar
-            //            Group {
             LazyVGrid(columns: columns) {
                 ForEach(getDays(month: month, year: year)) { day in
                     Group {
@@ -81,13 +81,13 @@ struct MonthCalendarScreen: View {
                     .font(.system(size: 16,
                                   weight: .medium))
                     .clipShape(Circle())
-                    .overlay{
-                        if day.isFilled && tempSelectedDates.contains(day.date!) {
-                            Color.yellow
-                                .opacity(0.2)
-                                .clipShape(Circle())
-                        }
-                    }
+//                    .overlay{
+//                        if day.isFilled && tempSelectedDates.contains(day.date!) {
+//                            Color.yellow
+//                                .opacity(0.2)
+//                                .clipShape(Circle())
+//                        }
+//                    }
                     .overlay {
                         if day.isFilled && calendar.isDateInToday(day.date!) {
                             Circle().stroke(Color.accentColor, lineWidth: 2)
@@ -106,8 +106,6 @@ struct MonthCalendarScreen: View {
             .background(.accentColor2.opacity(0.3))
             .clipShape(RoundedRectangle(cornerRadius: 15))
             .padding(.top, 18)
-            //            }
-            //            .id("\(month)-\(year)")
             //        .gesture(DragGesture()
             //            .onChanged { value in
             //                selectDatesBasedOnCGPoints(
@@ -122,6 +120,7 @@ struct MonthCalendarScreen: View {
             //            }
             //        )
 
+            // --------------------------------------------------------------------------------
             // MARK: Month Controller
             HStack {
                 Button {
@@ -155,7 +154,6 @@ struct MonthCalendarScreen: View {
                 }
             }
             .padding()
-            //            .background(.accentColor2.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: 15))
             //        .gesture(DragGesture()
             //            .onChanged { value in
@@ -171,10 +169,20 @@ struct MonthCalendarScreen: View {
             //            }
             //        )
 
+            // --------------------------------------------------------------------------------
             // MARK: Today Button
             Button("Today") {
-                goToToday()
+                withAnimation(.easeInOut) {
+                    goToToday()
+                }
             }
+
+            // UNCOMMENT TO DEBUG
+            //            ScrollView {
+            //                ForEach(dates, id: \.id) { date in
+            //                    Text(getDateFormatterWithTime().string(from: date.date))
+            //                }
+            //            }
             Spacer()
         }
         .onAppear {
@@ -199,9 +207,9 @@ struct MonthCalendarScreen: View {
 
             generator.prepare()
             if isSelected(date: date) {
-                removeDate(date: date)
+                removeDate(date)
             } else {
-                insertDate(date: date)
+                insertDate(date)
             }
             generator.impactOccurred()
 
@@ -250,13 +258,13 @@ struct MonthCalendarScreen: View {
 
     private func isSelected(date: Date) -> Bool {
         return dates.contains(where: { periodDate in
-            return Calendar.current.isDate(periodDate.date, inSameDayAs: date)
+            return calendar.isDate(periodDate.date, inSameDayAs: date)
         })
     }
 
     private func isPredicted(date: Date) -> Bool {
         return predictions.contains(where: { predictedDate in
-            return Calendar.current.isDate(predictedDate, inSameDayAs: date)
+            return calendar.isDate(predictedDate, inSameDayAs: date)
         })
     }
 
@@ -272,14 +280,14 @@ struct MonthCalendarScreen: View {
         }
     }
 
-    private func insertDate(date: Date) {
+    private func insertDate(_ date: Date) {
         let newDate = PeriodDate(context: viewContext)
         newDate.date = date
         saveContext(viewContext)
     }
 
-    private func removeDate(date: Date) {
-        if let dateToRemove = dates.first(where: { $0.date == date }) {
+    private func removeDate(_ date: Date) {
+        if let dateToRemove = dates.first(where: { calendar.isDate($0.date, inSameDayAs: date) }) {
             viewContext.delete(dateToRemove)
             saveContext(viewContext)
         }
@@ -292,17 +300,14 @@ struct MonthCalendarScreen: View {
         userAverages.first!.averagePeriodLength = Int16(freshResults.newAveragePeriodLength)
         saveContext(viewContext)
 
-        if !predictions.isEmpty {
-            print("CREATING NOTIFICATION IN REFRESH")
+createNotification()
+    }
 
+    private func createNotification() {
+        if !predictions.isEmpty && userSettings.first!.isNotificationEnabled {
             let dateOfNotification = calculateDayOfNotification(
                 dayOfFirstPredictedPeriod: predictions.first!,
                 settings: userSettings.first!)
-
-            print("FIRST DATE OF PREDICTIONS: \(getDateFormatter().string(from: predictions.first!))")
-            print("DAYS BEFORE \(userSettings.first!.daysBeforeNotification)")
-            print("DATE OF NOTIF: \(getDateFormatterWithTime().string(from: dateOfNotification))")
-
             emptyAndAddNewNotification(dateOfNotification: dateOfNotification, settings: userSettings.first!)
         }
     }
@@ -313,27 +318,27 @@ struct MonthCalendarScreen: View {
     }
 
     private func previousMonth() {
-        generator.prepare()
+//        generator.prepare()
         if month == 1 {
             month = 12
             year -= 1
         } else {
             month -= 1
         }
-        dayPositions = [:]
-        generator.impactOccurred()
+//        dayPositions = [:]
+//        generator.impactOccurred()
     }
 
     private func nextMonth() {
-        generator.prepare()
+//        generator.prepare()
         if month == 12 {
             month = 1
             year += 1
         } else {
             month += 1
         }
-        dayPositions = [:]
-        generator.impactOccurred()
+//        dayPositions = [:]
+//        generator.impactOccurred()
 
         if !dates.isEmpty {
             let lastDayOfPrediction: Date = predictions.last!

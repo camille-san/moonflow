@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FirstTimeScreen: View {
-    
+
     enum Step {
         case welcome
         case name
@@ -19,9 +19,9 @@ struct FirstTimeScreen: View {
         case notificationSetup
         case ready
     }
-    
+
     @Environment(\.managedObjectContext) private var viewContext
-    
+
     @State private var progress: Step = .welcome
     @State private var name = ""
     @State private var firstDayLastPeriod: Date?
@@ -34,22 +34,33 @@ struct FirstTimeScreen: View {
         let components = DateComponents(hour: 9, minute: 0)
         return calendar.date(from: components) ?? Date()
     }()
-    
+    @State private var arrowOffsetWelcome = CGFloat.zero
+    @State private var arrowWelcomeOpacity: CGFloat = 0
+    @State private var arrowNameOpacity: CGFloat = 0
+    @State private var bellAngle: CGFloat = 0
+    @State private var partyScale: CGFloat = 22
+
+
     @FetchRequest(sortDescriptors: [])
     private var userInfos: FetchedResults<UserInfos>
-    
+
     @State private var handRotated = false
     @State private var offsetX: CGFloat = 0
-    
+
     private let screenWidth = UIScreen.main.bounds.width
     private let slideDuration: CGFloat = 0.2
-    
+
     var body: some View {
-        
+
         HStack {
-            Group {
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(getProgressColor(.welcome))
+            Button {
+                previousSlide()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundStyle(.gray.opacity(0.5))
+            }.padding(.trailing, 16)
+            HStack {
                 RoundedRectangle(cornerRadius: 5)
                     .fill(getProgressColor(.name))
                 RoundedRectangle(cornerRadius: 5)
@@ -62,19 +73,23 @@ struct FirstTimeScreen: View {
                     .fill(getProgressColor(.notificationRequest))
                 RoundedRectangle(cornerRadius: 5)
                     .fill(getProgressColor(.notificationSetup))
+                RoundedRectangle(cornerRadius: 5)
+                    .fill(getProgressColor(.ready))
             }
             .frame(height: 5)
+            .padding(.trailing, 38)
         }
-        .opacity((progress == .welcome || progress == .ready) ? 0 : 100)
-        .padding(.top, 24)
-        .padding(.horizontal, 58)
-        
+        .opacity((progress == .welcome) ? 0 : 1)
+        .padding(24)
+
         Spacer()
         ZStack {
-            
+
+            // --------------------------------------------------------------------------------
             // MARK: Start
             if progress == .welcome {
                 VStack (spacing: 18) {
+                    Spacer()
                     Text("👋")
                         .font(.system(size: 42))
                         .rotationEffect(.degrees(handRotated ? 30 : 0))
@@ -93,15 +108,44 @@ struct FirstTimeScreen: View {
                         VStack {
                             Text("Let's get")
                             Text("to know each other")
+                            Image(systemName: "arrowshape.right.fill")
+                                .offset(x: arrowOffsetWelcome, y: 0)
+                                .animation(Animation.easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: arrowOffsetWelcome)
+                                .opacity(arrowWelcomeOpacity)
+                                .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        withAnimation(.easeInOut) {
+                                            arrowWelcomeOpacity = 1
+                                        }
+                                        arrowOffsetWelcome = 10
+                                    }
+                                }
+                                .padding(.top, 18)
                         }
                     }
+                    Spacer()
+                    VStack (alignment: .leading, spacing: 5) {
+                        HStack (spacing: 4) {
+                            Image(systemName: "checkmark.shield")
+                                .font(.system(size: 16,
+                                              weight: .regular))
+                                .foregroundStyle(.green)
+                            Text("You can trust us").bold()
+                        }
+                        Text("Your personal data will")+Text(" never ").bold()+Text("leave your device and will")+Text(" never ").bold()+Text("be shared with any third")
+                    }
+                    .font(.caption)
+                    .foregroundStyle(.gray)
                 }
                 .offset(x: offsetX)
             }
-            
+
+            // --------------------------------------------------------------------------------
             // MARK: Name
             if progress == .name {
                 VStack (spacing: 24) {
+                    Text("🙋‍♀️")
+                        .font(.system(size: 50))
                     Text("What's your name ?")
                         .multilineTextAlignment(.center)
                     TextField("", text: $name)
@@ -112,79 +156,75 @@ struct FirstTimeScreen: View {
                         .background(.gray.opacity(0.1))
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .onSubmit {
-                            nextSlide(.lastPeriod)
+                            if !name.isEmpty {
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                nextSlide(.lastPeriod)
+                                arrowNameOpacity = 1
+                            }
                         }
+                        .submitLabel(.next)
                     Button {
                         nextSlide(.lastPeriod)
                     } label: {
-                        Text("Next")
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 18)
-                            .padding(.vertical, 12)
-                            .background(.accent)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                        Image(systemName: "arrowshape.right.fill")
                     }
-                    .opacity(name.isEmpty ? 0 : 100)
-                    .padding(.top, 52)
+                    .opacity(arrowNameOpacity)
                 }
                 .offset(x: offsetX)
                 .onAppear {
                     appearsInScreen()
                 }
             }
-            
+
+            // --------------------------------------------------------------------------------
             // MARK: Last Period
             if progress == .lastPeriod {
-                VStack (spacing: 24) {
+                VStack (spacing: 32) {
                     Text("When was the first day of your last period ?")
                         .multilineTextAlignment(.center)
-                    DatePicker(
-                        "",
-                        selection: $tempDate,
-                        in: ...Date(),
-                        displayedComponents: .date
-                    )
-                    .labelsHidden()
-                    VStack {
+                    HStack {
+                        DatePicker(
+                            "",
+                            selection: $tempDate,
+                            in: ...Date(),
+                            displayedComponents: .date
+                        )
+                        .labelsHidden()
+                        Spacer()
                         Button {
                             firstDayLastPeriod = tempDate
                             nextSlide(.usualPeriodLength)
                         } label: {
-                            Text("Next")
-                                .foregroundStyle(.white)
-                                .padding(.horizontal, 18)
-                                .padding(.vertical, 12)
-                                .background(.accent)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            Image(systemName: "arrowshape.right.fill")
                         }
-                        Button("I don't remember") {
-                            nextSlide(.usualPeriodLength)
-                        }
-                        .foregroundStyle(.secondary)
-                        Button("Previous") {
-                            previousSlide(.name)
-                        }
-                        .foregroundStyle(.secondary)
                     }
-                    .padding(.top, 52)
+                    //                    VStack {
+                    Button("I don't remember") {
+                        nextSlide(.usualPeriodLength)
+                    }
+                    .foregroundStyle(.secondary)
+                    .font(.system(size: 22))
                 }
                 .offset(x: offsetX)
                 .onAppear {
                     appearsInScreen()
                 }
             }
-            
+
+            // --------------------------------------------------------------------------------
             // MARK: Usual Period Length
             if progress == .usualPeriodLength {
                 VStack (spacing: 24) {
                     Text("What is your usual period length ?")
                         .multilineTextAlignment(.center)
-                    Text("\(tempPeriodLength)")
-                        .font(.system(size: 38,
-                                      weight: .bold,
-                                      design: .rounded))
-                        .foregroundStyle(.accent)
-                    Text("days")
+                    HStack {
+                        Text("\(tempPeriodLength)")
+                            .font(.system(size: 38,
+                                          weight: .bold,
+                                          design: .rounded))
+                            .foregroundStyle(.accent)
+                        Text("days")
+                    }
                     Stepper(
                         "",
                         value: $tempPeriodLength,
@@ -192,45 +232,38 @@ struct FirstTimeScreen: View {
                         step: 1
                     )
                     .labelsHidden()
-                    VStack {
-                        Button {
-                            nextSlide(.usualCycleLength)
-                        } label: {
-                            Text("Next")
-                                .foregroundStyle(.white)
-                                .padding(.horizontal, 18)
-                                .padding(.vertical, 12)
-                                .background(.accent)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                        }
-                        Button("I don't know") {
-                            nextSlide(.usualCycleLength)
-                        }
-                        .foregroundStyle(.secondary)
-                        Button("Previous") {
-                            previousSlide(.lastPeriod)
-                        }
-                        .foregroundStyle(.secondary)
+                    Button {
+                        nextSlide(.usualCycleLength)
+                    } label: {
+                        Image(systemName: "arrowshape.right.fill")
                     }
-                    .padding(.top, 52)
+                    Button("I don't know") {
+                        nextSlide(.usualCycleLength)
+                    }
+                    .foregroundStyle(.secondary)
+                    .font(.system(size: 22))
+                    .padding(.top, 18)
                 }
                 .offset(x: offsetX)
                 .onAppear {
                     appearsInScreen()
                 }
             }
-            
+
+            // --------------------------------------------------------------------------------
             // MARK: Usual Cycle Length
             if progress == .usualCycleLength {
                 VStack (spacing: 24) {
                     Text("What is your usual cycle length ?")
                         .multilineTextAlignment(.center)
-                    Text("\(tempCycleLength)")
-                        .font(.system(size: 38,
-                                      weight: .bold,
-                                      design: .rounded))
-                        .foregroundStyle(.accent)
-                    Text("days")
+                    HStack {
+                        Text("\(tempCycleLength)")
+                            .font(.system(size: 38,
+                                          weight: .bold,
+                                          design: .rounded))
+                            .foregroundStyle(.accent)
+                        Text("days")
+                    }
                     Stepper(
                         "",
                         value: $tempCycleLength,
@@ -238,34 +271,25 @@ struct FirstTimeScreen: View {
                         step: 1
                     )
                     .labelsHidden()
-                    VStack {
-                        Button {
-                            nextSlide(.notificationRequest)
-                        } label: {
-                            Text("Next")
-                                .foregroundStyle(.white)
-                                .padding(.horizontal, 18)
-                                .padding(.vertical, 12)
-                                .background(.accent)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                        }
-                        Button("I don't know") {
-                            nextSlide(.notificationRequest)
-                        }
-                        .foregroundStyle(.secondary)
-                        Button("Previous") {
-                            previousSlide(.usualPeriodLength)
-                        }
-                        .foregroundStyle(.secondary)
+                    Button {
+                        nextSlide(.notificationRequest)
+                    } label: {
+                        Image(systemName: "arrowshape.right.fill")
                     }
-                    .padding(.top, 52)
+                    Button("I don't know") {
+                        nextSlide(.notificationRequest)
+                    }
+                    .font(.system(size: 22))
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 18)
                 }
                 .offset(x: offsetX)
                 .onAppear {
                     appearsInScreen()
                 }
             }
-            
+
+            // --------------------------------------------------------------------------------
             // MARK: Notifications Enabled
             if progress == .notificationRequest {
                 VStack (spacing: 24) {
@@ -281,36 +305,75 @@ struct FirstTimeScreen: View {
                             }
                         }
                     } label: {
+                        Image(systemName: "bell.fill")
+                            .font(.system(size: 24))
+                            .rotationEffect(.degrees(bellAngle))
+                            .onAppear {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                                    let duration: CGFloat = 0.3
+                                    let bellAnimation = Animation.easeInOut(duration: duration)
+
+                                    withAnimation(bellAnimation) {
+                                        bellAngle = -30
+                                    }
+                                    withAnimation(bellAnimation.delay(duration)) {
+                                        bellAngle = 0
+                                    }
+                                    withAnimation(bellAnimation.delay(duration*2)) {
+                                        bellAngle = -30
+                                    }
+                                    withAnimation(bellAnimation.delay(duration*3)) {
+                                        bellAngle = 0
+                                    }
+                                    Timer.scheduledTimer(withTimeInterval: duration*4+1.5, repeats: true) { timer in
+                                        withAnimation(bellAnimation) {
+                                            bellAngle = -30
+                                        }
+                                        withAnimation(bellAnimation.delay(duration)) {
+                                            bellAngle = 0
+                                        }
+                                        withAnimation(bellAnimation.delay(duration*2)) {
+                                            bellAngle = -30
+                                        }
+                                        withAnimation(bellAnimation.delay(duration*3)) {
+                                            bellAngle = 0
+                                        }
+                                    }
+                                }
+                            }
+
                         Text("Yes")
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 18)
-                            .padding(.vertical, 12)
-                            .background(.accent)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
-                    .padding(.top, 52)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 12)
+                    .background(.accent)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(.top, 32)
                     Button("No") {
                         nextSlide(.ready)
                     }
+                    .font(.system(size: 22))
+                    .foregroundStyle(.secondary)
                 }
                 .offset(x: offsetX)
                 .onAppear {
                     appearsInScreen()
                 }
             }
-            
+
+            // --------------------------------------------------------------------------------
             // MARK: Notifications Setup
             if progress == .notificationSetup {
                 VStack (spacing: 24) {
                     Text("When do you want to be notified about your next periods ?")
                         .multilineTextAlignment(.center)
                     HStack{
-                        Group {
-                            Text("\(daysBeforeNotifications)")
-                                .foregroundStyle(.accent)
-                            Text("day(s) before")
-                        }
-                        .font(.system(size: 18))
+                        Text("\(daysBeforeNotifications)")
+                            .foregroundStyle(.accent)
+                            .font(.system(size: 26, weight: .bold, design: .rounded))
+                        Text("day(s) before")
+                            .font(.system(size: 18))
                         Spacer()
                         Stepper(
                             "",
@@ -320,11 +383,10 @@ struct FirstTimeScreen: View {
                         )
                         .labelsHidden()
                     }
+                    .padding(.top, 22)
                     HStack{
-                        Group {
-                            Text("Time of notification")
-                        }
-                        .font(.system(size: 18))
+                        Text("At")
+                            .font(.system(size: 18))
                         Spacer()
                         DatePicker(
                             "Start Date",
@@ -336,36 +398,40 @@ struct FirstTimeScreen: View {
                     Button {
                         nextSlide(.ready)
                     } label: {
-                        Text("Next")
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 18)
-                            .padding(.vertical, 12)
-                            .background(.accent)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                        Image(systemName: "arrowshape.right.fill")
                     }
-                    .padding(.top, 52)
-                    Button("Previous") {
-                        previousSlide(.notificationRequest)
-                    }
-                    .foregroundStyle(.secondary)
+                    .padding(.top, 28)
                 }
                 .offset(x: offsetX)
                 .onAppear {
                     appearsInScreen()
                 }
             }
-            
+
+            // --------------------------------------------------------------------------------
             // MARK: Ready
             if progress == .ready {
                 VStack (spacing: 24) {
                     Text("🎉")
-                        .font(.system(size: 42))
+                        .font(.system(size: partyScale))
+                        .onAppear {
+                            let duration: CGFloat = 0.3
+                            let partyAnimation = Animation.easeInOut(duration: duration)
+
+                            withAnimation(partyAnimation) {
+                                partyScale = 50
+                            }
+                            withAnimation(partyAnimation.delay(duration)) {
+                                partyScale = 42
+                            }
+                        }
                     Text("We're ready \(name) !")
                         .multilineTextAlignment(.center)
                     Button {
                         makeReady()
                     } label: {
                         Text("Let's start")
+                            .multilineTextAlignment(.center)
                             .foregroundStyle(.white)
                             .padding(.horizontal, 18)
                             .padding(.vertical, 12)
@@ -381,10 +447,10 @@ struct FirstTimeScreen: View {
             Spacer()
         }
         .font(.system(.title, design: .rounded))
-        .padding(.horizontal, 58)
+        .padding(24)
         Spacer()
     }
-    
+
     private func getProgressColor(_ step: Step) -> Color {
         if progress == step {
             return .accentColor
@@ -392,7 +458,7 @@ struct FirstTimeScreen: View {
             return .gray.opacity(0.3)
         }
     }
-    
+
     private func getUserInfos() -> UserInfos {
         if let infos: UserInfos = userInfos.first {
             return infos
@@ -400,7 +466,7 @@ struct FirstTimeScreen: View {
             fatalError("Initialization of database error")
         }
     }
-    
+
     private func nextSlide(_ step: Step) {
         withAnimation {
             offsetX = -screenWidth
@@ -411,56 +477,66 @@ struct FirstTimeScreen: View {
             appearsInScreen()
         }
     }
-    
-    private func previousSlide(_ step: Step) {
+
+    private func previousSlide() {
         withAnimation {
             offsetX = screenWidth*2
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + slideDuration) {
-            progress = step
+            switch progress {
+            case .name: progress = .welcome
+            case .lastPeriod: progress = .name
+            case .usualPeriodLength: progress = .lastPeriod
+            case .usualCycleLength: progress = .usualPeriodLength
+            case .notificationRequest: progress = .usualCycleLength
+            case .notificationSetup: progress = .notificationRequest
+            case .ready: progress = .notificationSetup
+            default: break
+            }
             offsetX = -screenWidth
             appearsInScreen()
         }
     }
-    
+
     private func appearsInScreen() {
         withAnimation {
             offsetX = 0
         }
     }
-    
+
     private func makeReady() {
         let userSettings = UserSettings(context: viewContext)
         userSettings.isNotificationEnabled = areNotificationsEnabled
-        
+
         let hour = calendar.component(.hour, from: timeOfNotifications)
         let minutes = calendar.component(.minute, from: timeOfNotifications)
-        
+
         userSettings.daysBeforeNotification = Int16(daysBeforeNotifications)
         userSettings.hourOfNotification = Int16(hour)
         userSettings.minutesOfNotification = Int16(minutes)
-        
+
         let userAverages = UserAverages(context: viewContext)
         userAverages.averagePeriodLength = Int16(tempPeriodLength)
         userAverages.averageCycleLength = Int16(tempCycleLength)
-        
+
         let userInfos = getUserInfos()
         userInfos.name = name
-        
-        if let date = firstDayLastPeriod {
+
+        if var date = firstDayLastPeriod {
+            date = calendar.startOfDay(for: date)
             let firstPeriodDay = PeriodDate(context: viewContext)
             firstPeriodDay.date = date
-            
+
             for i in 1..<userAverages.averagePeriodLength {
                 let newDate = PeriodDate(context: viewContext)
                 newDate.date = date.addingDays(Int(i))
             }
         }
-        
+
         userInfos.isReady = true
         saveContext(viewContext)
     }
-    
+
 }
 
 #Preview {

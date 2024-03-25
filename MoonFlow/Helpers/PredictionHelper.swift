@@ -11,25 +11,27 @@ func predictNextYearPeriods(lastPeriod dates: [Date], averageCycleLength: Int, a
     
     var nextPredictedPeriodDays = [Date]()
     
-    // Complete last selected period if needed
+    // Last selected period could be incomplete because it is still ongoing
+    // We need to predict the incoming days based on the known average then
     if dates.count < averagePeriodLength {
+
         let count = averagePeriodLength - dates.count
         let lastDate = dates.last!
         let nextPredictedLastDay = lastDate.addingDays(count)
         let nextPredictedStartDay = lastDate.addingDays(1)
         nextPredictedPeriodDays += datesBetween(startDate: nextPredictedStartDay, endDate: nextPredictedLastDay)
+        
     }
     
+    // We take the first day of the last period to add it the average cycle for the first prediction
     var lastFirstDay: Date = dates.first!
     
     // For 12 months
     for _ in 1...12 {
         let nextPredictedFirstDay = lastFirstDay.addingDays(averageCycleLength)
-        //        let nextPredictedFirstDay = calendar.date(byAdding: .day, value: averageCycleLength, to: lastFirstDay)!
         
         // periodLength -1 because the first day is already included
         let nextPredictedLastDay = nextPredictedFirstDay.addingDays(averagePeriodLength-1)
-        //        let nextPredictedLastDay = calendar.date(byAdding: .day, value: averagePeriodLength-1, to: nextPredictedFirstDay)!
         
         nextPredictedPeriodDays += datesBetween(startDate: nextPredictedFirstDay, endDate: nextPredictedLastDay)
         lastFirstDay = nextPredictedFirstDay
