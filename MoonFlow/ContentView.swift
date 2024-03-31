@@ -10,7 +10,7 @@ import CoreData
 import UserNotifications
 
 struct ContentView: View {
-    
+
     @Environment(\.managedObjectContext) private var viewContext
     
     @State private var selection: Tab = .calendar
@@ -53,6 +53,7 @@ struct ContentView: View {
                     SettingsScreen(isSheetOpened: $showSettings, predictions: $predictions)
                 }
             }
+            .background(.BGCOLOR)
         } else {
             FirstTimeScreen()
         }
@@ -71,4 +72,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .preferredColorScheme(.dark)
 }

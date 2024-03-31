@@ -14,7 +14,7 @@ struct MoonFlowApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
-                .preferredColorScheme(.light)
+                .preferredColorScheme(.dark)
                 .font(.system(.body, design: .rounded))
         }
     }

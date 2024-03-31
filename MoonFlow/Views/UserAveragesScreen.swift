@@ -29,7 +29,6 @@ struct UserAveragesScreen: View {
             HStack (alignment: .top) {
                 VStack {
                     Text("\(userAverages[0].averageCycleLength)")
-                        .foregroundStyle(.black)
                         .bold()
                         .frame(width: size, height: size)
                         .clipShape(Circle())
@@ -40,7 +39,6 @@ struct UserAveragesScreen: View {
                 Spacer()
                 VStack {
                     Text("\(userAverages[0].averagePeriodLength)")
-                        .foregroundStyle(.black)
                         .bold()
                         .frame(width: size, height: size)
                         .clipShape(Circle())
@@ -58,4 +56,5 @@ struct UserAveragesScreen: View {
 #Preview {
     UserAveragesScreen()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .preferredColorScheme(.dark)
 }

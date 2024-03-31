@@ -104,6 +104,14 @@ struct SettingsScreen: View {
                 .listStyle(.inset)
             }
             Spacer()
+            HStack {
+                Image(systemName: "info.circle")
+                Text("Moon Phases Drawings by Pixel Paper Prints")
+            }
+            .font(.footnote)
+            Text("changer couleurs theme")
+            Text("changer manuellement durée du cycle")
+            Text("demander un like")
         }
         .onAppear {
             tempNotificationsEnabled = getUserSettings().isNotificationEnabled
@@ -190,4 +198,5 @@ struct SettingsScreen: View {
 #Preview {
     SettingsScreen(isSheetOpened: .constant(true), predictions: .constant([Date]()))
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .preferredColorScheme(.dark)
 }

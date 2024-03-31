@@ -13,6 +13,10 @@ struct MonthCalendarScreen: View {
 
     @Environment(\.managedObjectContext) private var viewContext
 
+//    @StateObject var moon = MoonPhaseService()
+
+    @State var moonJson: MoonJson?
+
     @FetchRequest(sortDescriptors: [])
     private var dates: FetchedResults<PeriodDate>
     @FetchRequest(sortDescriptors: [])
@@ -38,7 +42,16 @@ struct MonthCalendarScreen: View {
 
     var body: some View {
         VStack {
+            if moonJson != nil {
+                Image(moonJson!.imageName)
+                    .resizable()
+                    .frame(maxWidth: 100, maxHeight: 100)
+            } else {
 
+            }
+            Text("séparé ave infos d'aujourd'hui puis infos du jour sélectionné")
+            Text("scroll haut bas pour mois")
+            Text("click = select date mais pas ajout règles")
             // --------------------------------------------------------------------------------
             // MARK: Week Days Columns
             LazyVGrid(columns: columns, spacing: 20) {
@@ -104,7 +117,7 @@ struct MonthCalendarScreen: View {
                 }
             }
             .padding()
-            .background(.accentColor2.opacity(0.3))
+            .background(.accent.opacity(0.3))
             .clipShape(RoundedRectangle(cornerRadius: 15))
             .padding(.top, 18)
             //        .gesture(DragGesture()
@@ -156,6 +169,13 @@ struct MonthCalendarScreen: View {
             }
             .padding()
             .clipShape(RoundedRectangle(cornerRadius: 15))
+            .task {
+                        do {
+                            moonJson = try await fetchSimpleMoonPhase()
+                        } catch {
+                            moonJson = nil
+                        }
+                    }
             //        .gesture(DragGesture()
             //            .onChanged { value in
             //                selectDatesBasedOnCGPoints(
@@ -186,6 +206,7 @@ struct MonthCalendarScreen: View {
             //            }
             Spacer()
         }
+        .background(.BGCOLOR)
         .onAppear {
             append1YearPredicted(fromDates: dates.map { $0.date })
         }
@@ -357,4 +378,5 @@ struct MonthCalendarScreen: View {
 #Preview {
     MonthCalendarScreen(predictions: .constant([Date]()))
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .preferredColorScheme(.dark)
 }
